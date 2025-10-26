@@ -6,251 +6,112 @@
   <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
   <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
   <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
-  <style>
-    /* ====== GLOBAL STYLES ====== */
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
-    body {
-      font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, #eef2f3, #dfe9f3);
-      color: #222;
-      margin: 0;
-      padding: 0;
-      overflow-x: hidden;
-      transition: background 0.4s, color 0.4s;
-    }
-
-    header {
-      background: linear-gradient(90deg, #0077b6, #00b4d8);
-      color: white;
-      text-align: center;
-      padding: 40px 20px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-    }
-
-    header h1 {
-      font-size: 2.5rem;
-      margin: 0;
-      letter-spacing: 1px;
-      animation: fadeInDown 1s ease-out;
-    }
-
-    @keyframes fadeInDown {
-      0% { opacity: 0; transform: translateY(-20px); }
-      100% { opacity: 1; transform: translateY(0); }
-    }
-
-    /* ====== DARK MODE ====== */
-    body.dark {
-      background: #0d1117;
-      color: #e6edf3;
-    }
-    body.dark header {
-      background: linear-gradient(90deg, #0b3d91, #0077b6);
-      box-shadow: 0 4px 25px rgba(0, 0, 0, 0.5);
-    }
-    body.dark section {
-      background: #161b22;
-      box-shadow: 0 0 20px rgba(255,255,255,0.05);
-    }
-    body.dark h2 {
-      color: #58a6ff;
-      border-left: 6px solid #00b4d8;
-    }
-    body.dark footer {
-      background: #111;
-      color: #aaa;
-    }
-    body.dark .toggle-btn {
-      background: #161b22;
-      color: #58a6ff;
-      border: 1px solid #333;
-    }
-
-    /* ====== TOGGLE BUTTON ====== */
-    .toggle-btn {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      background: #fff;
-      border: none;
-      border-radius: 30px;
-      padding: 10px 20px;
-      font-size: 0.9rem;
-      cursor: pointer;
-      font-weight: 600;
-      color: #0077b6;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-      transition: all 0.3s ease;
-      z-index: 2000;
-    }
-    .toggle-btn:hover {
-      transform: scale(1.05);
-      box-shadow: 0 4px 25px rgba(0,0,0,0.2);
-    }
-
-    /* ====== SECTIONS ====== */
-    section {
-      max-width: 900px;
-      margin: 60px auto;
-      background: #fff;
-      border-radius: 20px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-      padding: 40px 50px;
-      transition: all 0.4s ease;
-    }
-    section:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 20px 40px rgba(0,0,0,0.15);
-    }
-
-    h2 {
-      color: #0077b6;
-      border-left: 6px solid #00b4d8;
-      padding-left: 12px;
-      font-size: 1.5rem;
-      margin-bottom: 20px;
-    }
-
-    .chart {
-      margin: 30px auto;
-      text-align: center;
-      animation: fadeIn 1.4s ease;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    footer {
-      text-align: center;
-      padding: 30px;
-      color: #555;
-      font-size: 0.9rem;
-      background: #f1f5f9;
-      margin-top: 50px;
-    }
-    footer span {
-      color: #0077b6;
-      font-weight: bold;
-    }
-
-    /* ====== SCROLLBAR ====== */
-    ::-webkit-scrollbar {
-      width: 10px;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: linear-gradient(180deg, #0077b6, #00b4d8);
-      border-radius: 8px;
-    }
-    body.dark ::-webkit-scrollbar-thumb {
-      background: linear-gradient(180deg, #0b3d91, #00b4d8);
-    }
-  </style>
 </head>
+<body style="font-family: Arial; margin: 30px; background-color: #fafafa;">
+  <h1 style="text-align:center;">🚗 Traffic Incident Analysis - Dubai</h1>
 
-<body>
-  <button class="toggle-btn" onclick="toggleDarkMode()">🌙 Dark Mode</button>
+  <!-- Visualization 1 -->
+  <h2>1️⃣ Accident Distribution by Day of the Week</h2>
+  <div id="vis1"></div>
 
-  <header>
-    <h1>🚦 Traffic Incident Analysis – Dubai Emirate</h1>
-  </header>
+  <!-- Visualization 2 -->
+  <h2>2️⃣ Accident Distribution by Hour of the Day</h2>
+  <div id="vis2"></div>
 
-  <section>
-    <h2>1. Accident Distribution by Day of the Week</h2>
-    <div id="dayOfWeek" class="chart"></div>
-  </section>
+  <!-- Visualization 3 -->
+  <h2>3️⃣ Accident Density Map Across Dubai</h2>
+  <div id="vis3"></div>
 
-  <section>
-    <h2>2. Accident Distribution by Hour of the Day</h2>
-    <div id="hourOfDay" class="chart"></div>
-  </section>
-
-  <section>
-    <h2>3. Accident Density Map Across Dubai</h2>
-    <div id="map" class="chart"></div>
-  </section>
-
-  <footer>
-    © 2025 <span>Traffic Data Dashboard</span> | Created by Data Analyst
-  </footer>
-
-  <script>
-    function toggleDarkMode() {
-      document.body.classList.toggle('dark');
-      const btn = document.querySelector('.toggle-btn');
-      btn.textContent = document.body.classList.contains('dark')
-        ? '☀ Light Mode'
-        : '🌙 Dark Mode';
-    }
-
+  <script type="text/javascript">
     const dataUrl = "https://raw.githubusercontent.com/sheriefAbdallah/CS318/refs/heads/main/Traffic_Incidents.csv";
 
-    // ===== Chart 1: Day of the week =====
-    const dayChart = {
-      "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-      "data": {"url": dataUrl, "format": {"type": "csv", "parse": {"acci_time": "%d/%m/%Y %H:%M:%S"}}},
-      "transform": [{"calculate": "day(datum.acci_time)", "as": "day_of_week"}],
-      "mark": {"type": "bar", "cornerRadiusTopLeft": 6, "cornerRadiusTopRight": 6},
-      "encoding": {
-        "x": {"field": "day_of_week", "type": "ordinal", "title": "Day of the Week"},
-        "y": {"aggregate": "count", "title": "Number of Accidents"},
-        "color": {"field": "day_of_week", "type": "nominal", "scale": {"scheme": "blues"}},
-        "tooltip": [{"field": "day_of_week"}, {"aggregate": "count", "title": "Accidents"}]
-      },
-      "width": 700,
-      "height": 400
-    };
-
-    // ===== Chart 2: Hour of day =====
-    const hourChart = {
-      "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-      "data": {"url": dataUrl, "format": {"type": "csv", "parse": {"acci_time": "%d/%m/%Y %H:%M:%S"}}},
-      "transform": [{"calculate": "hours(datum.acci_time)", "as": "hour"}],
-      "mark": {"type": "line", "point": {"filled": true, "size": 60}},
-      "encoding": {
-        "x": {"field": "hour", "type": "ordinal", "title": "Hour of Day"},
-        "y": {"aggregate": "count", "title": "Number of Accidents"},
-        "color": {"field": "hour", "type": "quantitative", "scale": {"scheme": "turbo"}},
-        "tooltip": [{"field": "hour"}, {"aggregate": "count", "title": "Accidents"}]
-      },
-      "width": 700,
-      "height": 400
-    };
-
-    // ===== Chart 3: Density map =====
-    const mapChart = {
-      "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-      "description": "Accident Density Map - Dubai",
-      "data": {"url": dataUrl, "format": {"type": "csv"}},
-      "transform": [{"filter": "datum.acci_y > 23"}],
-      "mark": {"type": "circle", "opacity": 0.6, "stroke": "#004e89", "strokeWidth": 0.3},
-      "encoding": {
-        "longitude": {"field": "acci_y", "type": "quantitative", "title": "Longitude"},
-        "latitude": {"field": "acci_x", "type": "quantitative", "title": "Latitude"},
-        "size": {"aggregate": "count", "type": "quantitative", "title": "Accident Density", "scale": {"range": [10, 400]}},
-        "color": {
-          "aggregate": "count",
-          "type": "quantitative",
-          "title": "Density Level",
-          "scale": {"scheme": "redyellowblue"}
+    // === Visualization 1 ===
+    const vis1 = {
+      $schema: "https://vega.github.io/schema/vega-lite/v5.json",
+      data: { url: dataUrl },
+      transform: [
+        { timeUnit: "day", field: "acci_time", as: "day_of_week" },
+        { aggregate: [{ op: "count", as: "count" }], groupby: ["day_of_week"] }
+      ],
+      mark: { type: "bar", color: "#2E86C1" },
+      encoding: {
+        x: {
+          field: "day_of_week",
+          type: "ordinal",
+          title: "Day of the Week",
+          sort: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
         },
-        "tooltip": [
-          {"aggregate": "count", "title": "Number of Accidents"},
-          {"field": "acci_x", "title": "Latitude"},
-          {"field": "acci_y", "title": "Longitude"}
+        y: { field: "count", type: "quantitative", title: "Number of Accidents" },
+        tooltip: [
+          { field: "day_of_week", title: "Day" },
+          { field: "count", title: "Accidents" }
         ]
       },
-      "width": 700,
-      "height": 450
+      config: { axis: { labelFontSize: 12, titleFontSize: 14 } }
     };
 
-    // ===== Embed charts =====
-    vegaEmbed("#dayOfWeek", dayChart);
-    vegaEmbed("#hourOfDay", hourChart);
-    vegaEmbed("#map", mapChart);
+    // === Visualization 2 ===
+    const vis2 = {
+      $schema: "https://vega.github.io/schema/vega-lite/v5.json",
+      data: { url: dataUrl },
+      transform: [
+        { timeUnit: "hours", field: "acci_time", as: "hour" },
+        { timeUnit: "day", field: "acci_time", as: "day_of_week" },
+        { aggregate: [{ op: "count", as: "count" }], groupby: ["hour", "day_of_week"] }
+      ],
+      mark: { type: "line", point: true },
+      encoding: {
+        x: { field: "hour", type: "ordinal", title: "Hour of the Day" },
+        y: { field: "count", type: "quantitative", title: "Number of Accidents" },
+        color: { field: "day_of_week", type: "nominal", title: "Day" },
+        tooltip: [
+          { field: "day_of_week", title: "Day" },
+          { field: "hour", title: "Hour" },
+          { field: "count", title: "Accidents" }
+        ]
+      },
+      config: { axis: { labelFontSize: 12, titleFontSize: 14 } }
+    };
+
+    // === Visualization 3 ===
+    const vis3 = {
+      $schema: "https://vega.github.io/schema/vega-lite/v5.json",
+      width: 800,
+      height: 500,
+      layer: [
+        // خريطة الإمارات فقط
+        {
+          data: {
+            url: "https://raw.githubusercontent.com/vega/vega-datasets/main/data/world-110m.json",
+            format: { type: "topojson", feature: "countries" }
+          },
+          transform: [{ filter: "datum.id == 784" }],
+          mark: { type: "geoshape", fill: "#e6f2ff", stroke: "#999" }
+        },
+        // نقاط الحوادث
+        {
+          data: { url: dataUrl },
+          transform: [{ filter: "datum.acci_y > 23" }],
+          mark: { type: "circle", opacity: 0.35, color: "red" },
+          encoding: {
+            longitude: { field: "acci_y", type: "quantitative" },
+            latitude: { field: "acci_x", type: "quantitative" },
+            size: { value: 25 },
+            tooltip: [
+              { field: "acci_id", title: "Accident ID" },
+              { field: "acci_name", title: "Description" },
+              { field: "acci_time", title: "Date & Time" }
+            ]
+          }
+        }
+      ],
+      projection: { type: "mercator", center: [55.3, 25.25], scale: 10000 },
+      title: "Accident Density Map - Dubai (Real Data Points)"
+    };
+
+    vegaEmbed("#vis1", vis1);
+    vegaEmbed("#vis2", vis2);
+    vegaEmbed("#vis3", vis3);
   </script>
 </body>
 </html>
